@@ -1,0 +1,5 @@
+__pycache__/
+beers.avro
+preprocessed.csv
+raw.csv
+

@@ -1,0 +1,24 @@
+{
+	"type": "record",
+	"name": "beers",
+	"namespace": "is.dubik",
+	"fields": [{
+		"name": "name",
+		"type": "string"
+	}, {
+		"name": "color",
+		"type": "double"
+	}, {
+		"name": "clarity",
+		"type": "double"
+	}, {
+		"name": "sweetness",
+		"type": "double"
+	}, {
+		"name": "bitterness",
+		"type": "double"
+	}, {
+		"name": "alcohol",
+		"type": "double"
+	}]
+}
