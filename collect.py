@@ -69,3 +69,9 @@ class Collect:
 
 if __name__ == '__main__':
     Collect().run()
+
+
+avro-python3==1.8.2
+requests==2.9.1
+matplotlib==2.2.2
+lxml==3.5.0
