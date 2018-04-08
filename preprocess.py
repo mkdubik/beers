@@ -136,7 +136,7 @@ class Preprocess():
         with open('raw.csv', 'r') as fd:
             csv_reader = csv.reader(fd, delimiter=',')
 
-            collection = []
+            collection = {}
             for i, row in enumerate(csv_reader):
                 desc = row[3].lower().replace('.', '').replace(',', '')
 
@@ -161,14 +161,11 @@ class Preprocess():
                     continue
 
                 features = self.parse(desc.split(), row[0])
-                features['name'] = row[0]
                 features['alcohol'] = alc
-                collection.append(features)
+                collection[row[0]] = features
 
         average = average / (i + 1)
-        
-        base = self._get_base_stats(collection, average)
-
+ 
         with open('beers.avsc', 'r') as fd:
             schema = avro.schema.Parse(fd.read())
 
@@ -177,13 +174,14 @@ class Preprocess():
         
             denominator_alc = maximum - minimum
             
-            for c in collection:
-                c['bitterness'] = self.BITTERNESS['class'][c['bitterness']] / self.BITTERNESS['maximum']
-                c['color'] = self.COLOR['class'][c['color']] / self.COLOR['maximum']
-                c['clarity'] = self.CLARITY['class'][c['clarity']] / self.CLARITY['maximum']
-                c['sweetness'] = self.SWEETNESS['class'][c['sweetness']] / self.CLARITY['maximum']
-                c['alcohol'] = (c['alcohol'] - minimum) / denominator_alc
-                writer.append(c)
+            for k, v in collection.items():
+                v['bitterness'] = self.BITTERNESS['class'][v['bitterness']] / self.BITTERNESS['maximum']
+                v['color'] = self.COLOR['class'][v['color']] / self.COLOR['maximum']
+                v['clarity'] = self.CLARITY['class'][v['clarity']] / self.CLARITY['maximum']
+                v['sweetness'] = self.SWEETNESS['class'][v['sweetness']] / self.CLARITY['maximum']
+                v['alcohol'] = (v['alcohol'] - minimum) / denominator_alc
+                v['name'] = k
+                writer.append(v)
             writer.close()
 
 if __name__ == '__main__':
